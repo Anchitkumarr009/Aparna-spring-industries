@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+/*
+ * THEME
+ * Colors are stored as raw HSL channels in :root below ("H S% L%") and exposed
+ * to Tailwind here, so classes like `bg-accent`, `text-primary-foreground`
+ * and `bg-primary/10` work. To re-brand the site, change the values in :root.
+ */
+@theme inline {
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Brand colors: navy (primary) and orange (accent) */
+  --background: 210 33% 98%;
+  --foreground: 222 47% 11%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 222 47% 25%;
+
+  --primary: 222 47% 25%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 214 32% 91%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 33% 95%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 30 95% 45%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --app-font-sans: "Inter", sans-serif;
+  --app-font-mono: Menlo, monospace;
+  --radius: 0.5rem;
+
+  /* Used by the Button component's hover/active overlays */
+  --button-outline: #0000001a;
+  --elevate-1: #00000008;
+  --elevate-2: #00000014;
+  --opaque-button-border-intensity: -8;
+  --primary-border: hsl(
+    from hsl(var(--primary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --secondary-border: hsl(
+    from hsl(var(--secondary)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+  --destructive-border: hsl(
+    from hsl(var(--destructive)) h s
+      calc(l + var(--opaque-button-border-intensity)) / alpha
+  );
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--app-font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/*
+ * hover-elevate / active-elevate-2: a subtle dark overlay on hover/press.
+ * Applied to every <Button>.
+ */
+@layer components {
+  .hover-elevate,
+  .active-elevate-2 {
+    position: relative;
+    z-index: 0;
+  }
+  .hover-elevate::after,
+  .active-elevate-2::after {
+    content: "";
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 999;
+    position: absolute;
+    inset: 0;
+  }
+  .border.hover-elevate::after,
+  .border.active-elevate-2::after {
+    inset: -1px;
+  }
+  .hover-elevate:hover::after {
+    background-color: var(--elevate-1);
+  }
+  .active-elevate-2:active::after {
+    background-color: var(--elevate-2);
+  }
+}
